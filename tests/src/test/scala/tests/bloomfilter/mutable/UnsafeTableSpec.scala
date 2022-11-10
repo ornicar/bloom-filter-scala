@@ -13,6 +13,7 @@ import org.scalacheck.commands.Commands
 import org.scalacheck.{Arbitrary, Gen, Prop, Properties}
 import org.scalatest.{matchers, PrivateMethodTester}
 import reflect.Selectable.reflectiveSelectable
+import scala.language.adhocExtensions
 
 class UnsafeTableSpec
     extends Properties("UnsafeTableSpec")
@@ -88,7 +89,6 @@ class UnsafeTableSpec
 
       def postCondition(state: State, result: Boolean): Prop = result
 
-
   class UnsafeTableInsertFindCommands extends Commands:
     type Sut = UnsafeTable8Bit
 
@@ -155,7 +155,6 @@ class UnsafeTableSpec
         state.addedItems < state.numberOfBuckets || state.addedItems < 4
       def postCondition(state: State, result: Boolean): Prop = result
 
-
   type UnsafeTableEx = UnsafeTable {
     def readTag(bucketIndex: Long, tagIndex: Int): Long
   }
@@ -168,8 +167,7 @@ class UnsafeTableSpec
         numPopulated,
         Gen.zip(Gen.choose(0, numBuckets - 1), Arbitrary.arbByte.arbitrary)
       )
-    } yield
-      numBuckets -> m
+    } yield numBuckets -> m
     val ptrAccessor = PrivateMethod[Long](Symbol("ptr"))
 
     def ptrOf(unsaffeTable: UnsafeTable) =
@@ -212,4 +210,3 @@ class UnsafeTableSpec
   property("UnsafeTable16Bit supports java serialization") = serializationProp(
     new UnsafeTable16Bit(_)
   )
-

@@ -13,6 +13,7 @@ import org.scalacheck.Test.Parameters
 import org.scalacheck.commands.Commands
 import org.scalacheck.{Arbitrary, Gen, Prop, Properties}
 import org.scalatest.{Inspectors, matchers}
+import scala.language.adhocExtensions
 
 class CuckooFilterSpec
     extends Properties("CuckooFilter")
@@ -85,7 +86,6 @@ class CuckooFilterSpec
         state.addedItems < state.expectedItems
       def postCondition(state: State, result: Boolean): Prop = result
 
-
   property("strange case") = Prop {
     val lst = List(-1L, 0L)
     val cf = CuckooFilter[Long](lst.size)
@@ -136,4 +136,3 @@ class CuckooFilterSpec
         finally sut2.dispose()
       finally sut.dispose()
     }
-

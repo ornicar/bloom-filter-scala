@@ -3,10 +3,14 @@ package tests.bloomfilter.mutable
 import bloomfilter.mutable.UnsafeBitArray
 import org.scalacheck.Prop.*
 import org.scalacheck.{Gen, Properties}
+import scala.language.adhocExtensions
 
 class UnsafeBitArraysSpec extends Properties("UnsafeBitArray"):
   def genListElems[A](max: Long)(implicit aGen: Gen[A]): Gen[List[A]] =
-    Gen.posNum[Int].map(_ % max).flatMap(i => Gen.listOfN(math.min(i, Int.MaxValue).toInt, aGen))
+    Gen
+      .posNum[Int]
+      .map(_ % max)
+      .flatMap(i => Gen.listOfN(math.min(i, Int.MaxValue).toInt, aGen))
 
   val genUnion = for {
     size <- Gen.oneOf[Long](1, 1000, Int.MaxValue, Int.MaxValue * 2L)
@@ -20,7 +24,6 @@ class UnsafeBitArraysSpec extends Properties("UnsafeBitArray"):
     thatIndices <- genListElems[Long](size)(Gen.chooseNum(0, size))
     commonIndices <- genListElems[Long](size)(Gen.chooseNum(0, size))
   } yield (size, indices, thatIndices, commonIndices)
-
 
   property("|") = forAll(genUnion) {
     case (size: Long, indices: List[Long], thatIndices: List[Long]) =>
@@ -40,7 +43,12 @@ class UnsafeBitArraysSpec extends Properties("UnsafeBitArray"):
   }
 
   property("&") = forAll(genIntersection) {
-    case (size: Long, indices: List[Long], thatIndices: List[Long], commonIndices: List[Long]) =>
+    case (
+          size: Long,
+          indices: List[Long],
+          thatIndices: List[Long],
+          commonIndices: List[Long]
+        ) =>
       val array = new UnsafeBitArray(size)
       indices.foreach(array.set)
       val thatArray = new UnsafeBitArray(size)
@@ -56,4 +64,3 @@ class UnsafeBitArraysSpec extends Properties("UnsafeBitArray"):
 
       result
   }
-

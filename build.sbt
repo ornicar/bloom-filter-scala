@@ -1,5 +1,3 @@
-import com.typesafe.sbt.packager.archetypes.JavaAppPackaging
-import pl.project13.scala.sbt.JmhPlugin
 import sbt._
 
 lazy val root = (project in file("."))
@@ -21,7 +19,6 @@ lazy val sandboxApp = (project in file("sandboxApp"))
   .dependsOn(bloomFilter)
   .configs(Configs.all)
   .settings(Settings.sandboxApp)
-  .enablePlugins(JavaAppPackaging)
 
 lazy val tests = (project in file("tests"))
   .dependsOn(bloomFilter, sandbox)
@@ -38,4 +35,7 @@ lazy val examples = (project in file("examples"))
   .dependsOn(bloomFilter)
   .configs(Configs.all)
   .settings(Settings.examples)
-  .enablePlugins(JavaAppPackaging)
+
+publishTo := Some(
+  Resolver.file("file", new File(sys.props.getOrElse("publishTo", "")))
+)
