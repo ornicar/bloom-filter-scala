@@ -1,11 +1,11 @@
 package bloomfilter.util
 
-import sun.misc.{Unsafe => JUnsafe}
+import sun.misc.{Unsafe as JUnsafe}
 
 import scala.language.postfixOps
 import scala.util.Try
 
-object Unsafe {
+object Unsafe:
   val unsafe: JUnsafe = Try {
     classOf[JUnsafe]
       .getDeclaredFields
@@ -21,4 +21,3 @@ object Unsafe {
     case th: Throwable => throw new ExceptionInInitializerError(th)
   } get
 
-}

@@ -8,7 +8,7 @@ import org.scalacheck.{Arbitrary, Gen, Prop, Properties}
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalacheck.Prop.forAll
 
-class BloomFiltersSpec extends Properties("BloomFilters") {
+class BloomFiltersSpec extends Properties("BloomFilters"):
 
   val maxNumElems = 10
 
@@ -45,4 +45,3 @@ class BloomFiltersSpec extends Properties("BloomFilters") {
         unionBloomFilter.dispose()
         result
     }
-}

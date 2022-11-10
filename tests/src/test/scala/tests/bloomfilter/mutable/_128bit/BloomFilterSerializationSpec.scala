@@ -1,16 +1,15 @@
 package tests.bloomfilter.mutable._128bit
 
-import java.io._
+import java.io.*
 
 import bloomfilter.mutable._128bit.BloomFilter
 import org.scalacheck.Prop.forAll
 import org.scalacheck.{Gen, Properties}
-import org.scalatest.Matchers
+import org.scalatest.matchers.should.Matchers
 
-class BloomFilterSerializationSpec extends Properties("BloomFilter") with Matchers {
-  def genListElems[A](max: Long)(implicit aGen: Gen[A]): Gen[List[A]] = {
+class BloomFilterSerializationSpec extends Properties("BloomFilter") with Matchers:
+  def genListElems[A](max: Long)(implicit aGen: Gen[A]): Gen[List[A]] =
     Gen.posNum[Int].map(_ % max).flatMap(i => Gen.listOfN(math.min(i, Int.MaxValue).toInt, aGen))
-  }
 
   val gen = for {
     size <- Gen.oneOf[Long](1, 1000/*, Int.MaxValue.toLong + 1*/)
@@ -41,4 +40,3 @@ class BloomFilterSerializationSpec extends Properties("BloomFilter") with Matche
       result
   }
 
-}

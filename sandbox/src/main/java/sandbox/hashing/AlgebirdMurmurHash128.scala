@@ -2,18 +2,16 @@ package sandbox.hashing
 
 import java.nio.ByteBuffer
 
-case class AlgebirdMurmurHash128(seed: Long) extends AnyVal {
-  def apply(buffer: ByteBuffer, offset: Int, length: Int): (Long, Long) = {
+case class AlgebirdMurmurHash128(seed: Long) extends AnyVal:
+  def apply(buffer: ByteBuffer, offset: Int, length: Int): (Long, Long) =
     val longs = CassandraMurmurHash.hash3_x64_128(buffer, offset, length, seed)
     (longs(0), longs(1))
-  }
 
   def apply(bytes: Array[Byte]): (Long, Long) = apply(ByteBuffer.wrap(bytes), 0, bytes.length)
-  def apply(maxBytes: Int, fn: ByteBuffer => Unit): (Long, Long) = {
+  def apply(maxBytes: Int, fn: ByteBuffer => Unit): (Long, Long) =
     val buffer = ByteBuffer.allocate(maxBytes)
     fn(buffer)
     apply(buffer, 0, maxBytes)
-  }
   def apply(array: Array[Char]): (Long, Long) = apply(array.size * 2, { _.asCharBuffer.put(array) })
   def apply(array: Array[Short]): (Long, Long) = apply(array.size * 2, { _.asShortBuffer.put(array) })
   def apply(array: Array[Int]): (Long, Long) = apply(array.size * 4, { _.asIntBuffer.put(array) })
@@ -32,4 +30,3 @@ case class AlgebirdMurmurHash128(seed: Long) extends AnyVal {
     val charBuffer = buffer.asCharBuffer
     0.to(string.length - 1).foreach{ i => charBuffer.put(string.charAt(i)) }
   })
-}

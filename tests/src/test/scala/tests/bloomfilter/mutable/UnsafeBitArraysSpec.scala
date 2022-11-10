@@ -1,13 +1,12 @@
 package tests.bloomfilter.mutable
 
 import bloomfilter.mutable.UnsafeBitArray
-import org.scalacheck.Prop._
+import org.scalacheck.Prop.*
 import org.scalacheck.{Gen, Properties}
 
-class UnsafeBitArraysSpec extends Properties("UnsafeBitArray") {
-  def genListElems[A](max: Long)(implicit aGen: Gen[A]): Gen[List[A]] = {
+class UnsafeBitArraysSpec extends Properties("UnsafeBitArray"):
+  def genListElems[A](max: Long)(implicit aGen: Gen[A]): Gen[List[A]] =
     Gen.posNum[Int].map(_ % max).flatMap(i => Gen.listOfN(math.min(i, Int.MaxValue).toInt, aGen))
-  }
 
   val genUnion = for {
     size <- Gen.oneOf[Long](1, 1000, Int.MaxValue, Int.MaxValue * 2L)
@@ -58,4 +57,3 @@ class UnsafeBitArraysSpec extends Properties("UnsafeBitArray") {
       result
   }
 
-}
