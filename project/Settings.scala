@@ -12,18 +12,24 @@ object Settings {
     organization := "com.github.alexandrnikitin"
   )
 
-  lazy val root = build ++ Testing.settings
+  lazy val root = build ++ Testing.settings ++ noPublish
   lazy val bloomfilter =
-    build ++ Testing.settings ++ Dependencies.bloomfilter
+    build ++ Testing.settings ++ Dependencies.bloomfilter ++ Seq(
+      publishTo := Some(
+        Resolver.file("file", new File(sys.props.getOrElse("publishTo", "")))
+      )
+    )
   lazy val sandbox =
-    build ++ Testing.settings ++ Dependencies.sandbox
+    build ++ Testing.settings ++ Dependencies.sandbox ++ noPublish
   lazy val sandboxApp =
-    build ++ Dependencies.sandboxApp
+    build ++ Dependencies.sandboxApp ++ noPublish
   lazy val tests =
-    build ++ Testing.settings ++ Dependencies.tests
+    build ++ Testing.settings ++ Dependencies.tests ++ noPublish
   lazy val benchmarks =
-    build ++ Dependencies.benchmarks
-  lazy val examples = build
+    build ++ Dependencies.benchmarks ++ noPublish
+  lazy val examples = build ++ noPublish
+
+  val noPublish = publish / skip := true
 
   val scalacSettings = Seq(
     "-rewrite",
